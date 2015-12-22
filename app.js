@@ -4,7 +4,7 @@ app.controller('MainCtrl', [
     '$scope', 'posts',
     function($scope, posts) {
         $scope.posts = posts.posts;
-
+        huyanh = $scope;
         $scope.addPost = function() {
             if (!$scope.title || $scope.title === '') {
                 return;
@@ -33,23 +33,6 @@ app.controller('MainCtrl', [
     }
 ]);
 
-app.controller('PostsCtrl', [
-    "$scope", "$stateParams", "posts",
-    function($scope, $stateParams, posts) {
-        huyanh = posts.posts[$stateParams.id];
-        $scope.post = posts.posts[$stateParams.id];
-
-        $scope.addComment = function(){
-  if($scope.body === '') { return; }
-  $scope.post.comments.push({
-    body: $scope.body,
-    author: 'user',
-    upvotes: 0
-  });
-  $scope.body = '';
-};
-    }
-]);
 
 app.factory('posts', function() {
     var o = {
@@ -73,5 +56,24 @@ app.config([
                 controller: 'PostsCtrl'
             });
         $urlRouterProvider.otherwise("home");
+    }
+]);
+
+app.controller('PostsCtrl', [
+    "$scope", "$stateParams", "posts",
+    function($scope, $stateParams, posts) {
+        $scope.post = posts.posts[$stateParams.id];
+
+        $scope.addComment = function() {
+            if ($scope.body === '') {
+                return;
+            }
+            $scope.post.comments.push({
+                body: $scope.body,
+                author: 'user',
+                upvotes: 0
+            });
+            $scope.body = '';
+        };
     }
 ]);
